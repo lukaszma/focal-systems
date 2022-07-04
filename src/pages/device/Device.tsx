@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Alert, Tabs } from "antd";
 import LineChartOutlined from "@ant-design/icons/LineChartOutlined";
 import UnorderedListOutlined from "@ant-design/icons/UnorderedListOutlined";
@@ -7,10 +7,12 @@ import { DeviceDataApiResponse, getDeviceById } from "../../api";
 import { PageHeaderContext } from "../../contexts";
 import { DeviceGeneral, DeviceMetrics } from "./components";
 import { DeviceList } from "./Device.types";
+import { Loader } from "../../features";
 
 const Device: React.FC = () => {
   const { setPageHeader } = useContext(PageHeaderContext);
-  const [deviceData, setDeviceData] = useState<DeviceDataApiResponse>([]);
+  const [deviceData, setDeviceData] = useState<DeviceDataApiResponse>();
+  const [isDataInitialized, setIsDataInitialized] = useState(false);
   const { deviceId } = useParams();
 
   const { TabPane } = Tabs;
@@ -31,15 +33,24 @@ const Device: React.FC = () => {
       const data = await getDeviceById(deviceId);
 
       setDeviceData(data);
+      setIsDataInitialized(true);
     };
 
     getInitData();
   }, [deviceId]);
 
-  const parsedDeviceDate: DeviceList = deviceData?.map((item) => ({
-    ...item,
-    received_status_at: new Date(item.received_status_at),
-  }));
+  const parsedDeviceData: DeviceList = useMemo(
+    () =>
+      deviceData?.map((item) => ({
+        ...item,
+        received_status_at: new Date(item.received_status_at),
+      })) || [],
+    [deviceData]
+  );
+
+  if (!isDataInitialized) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -54,7 +65,7 @@ const Device: React.FC = () => {
             }
             key="general.tab"
           >
-            <DeviceGeneral data={parsedDeviceDate} />
+            <DeviceGeneral data={parsedDeviceData} />
           </TabPane>
           <TabPane
             tab={
@@ -71,7 +82,7 @@ const Device: React.FC = () => {
       ) : (
         <Alert
           message="Error"
-          description="Device not Found!"
+          description="Device Not Found!"
           type="error"
           showIcon
         />

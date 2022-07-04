@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { NotFound } from "./pages";
 import { PageHeaderContext } from "./contexts";
-import { AppLayout } from "./features";
+import { AppLayout, Loader } from "./features";
 import { PageHeaderProps } from "./contexts";
 import "./App.css";
 
@@ -18,7 +18,7 @@ function App() {
   const pageHeaderValue = { pageHeader, setPageHeader };
 
   return (
-    <React.Suspense fallback={<p>Loading...</p>}>
+    <React.Suspense fallback={<Loader />}>
       <BrowserRouter>
         <PageHeaderContext.Provider value={pageHeaderValue}>
           <Routes>

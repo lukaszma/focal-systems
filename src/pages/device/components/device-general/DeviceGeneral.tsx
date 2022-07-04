@@ -28,6 +28,11 @@ export const DeviceGeneral: React.FC<DeviceGeneralProps> = ({ data }) => {
       render: (date: Date) => <span>{format(date, "Pp")}</span>,
     },
     {
+      title: "Status id",
+      dataIndex: "status_id",
+      key: "status_id",
+    },
+    {
       title: "Battery level",
       dataIndex: "battery_level",
       key: "battery_level",
