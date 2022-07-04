@@ -5,8 +5,8 @@ export const getDeviceList = async (): Promise<DevicesApiResponse> =>
 
 export const getDeviceById = async (
   deviceId: string
-): Promise<DeviceDataApiResponse[]> => {
+): Promise<DeviceDataApiResponse> => {
   const deviceList = await getDeviceList();
-  console.log(deviceList);
+
   return deviceList[deviceId];
 };

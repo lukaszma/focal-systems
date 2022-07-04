@@ -1,11 +1,11 @@
-import { List, Avatar, Input } from "antd";
+import { List, Avatar, Input, Divider } from "antd";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { getDeviceList, DevicesApiResponse } from "../../api";
 import { PageHeaderContext } from "../../contexts";
 import { ListDataItem } from "./DeviceList.types";
 import { Link } from "react-router-dom";
 
-export const DeviceList: React.FC = () => {
+const DeviceList: React.FC = () => {
   const { setPageHeader } = useContext(PageHeaderContext);
   const [deviceList, setDeviceList] = useState<DevicesApiResponse>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,12 +41,13 @@ export const DeviceList: React.FC = () => {
 
   return (
     <div>
-      <Input onChange={onSearch} />
+      <Input onChange={onSearch} placeholder="Type to search device..." />
+      <Divider />
       <List
         itemLayout="horizontal"
         dataSource={listData}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
         }}
         renderItem={(item) => (
           <List.Item>
@@ -60,3 +61,5 @@ export const DeviceList: React.FC = () => {
     </div>
   );
 };
+
+export default DeviceList;

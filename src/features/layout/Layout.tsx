@@ -18,7 +18,7 @@ export const AppLayout: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <Layout.Content style={{ padding: "0 50px" }}>
+      <Layout.Content>
         <PageHeader
           className="site-page-header"
           onBack={onBackHandler}
